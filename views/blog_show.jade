@@ -1,24 +1,24 @@
 extends layout
 block content
 	h1.text-center= title
-	div#articles.text-center
+	div.text-center.row
 		h3.title
-			a(href="/blog/"+article._id)!= article.title
-		div.article
+			a(href="/blog/"+article._id)= title
 		div.created_at= article.created_at
 		div.body= article.body
 		each comment in article.comments
 			div.comment
 				div.person= comment.person
-				div.comment= comment.comment
-		div
-		form(method="post", action="/blog/addComment")
+				div.well.background-sunFlower= comment.comment
+		form(method="post", action="/blog/addComment").form-horizontal
 			input( type="hidden", name="_id", value=article._id.toHexString())
-			div
-				span Author :
-				input( type="text", name="person", id="addCommentPerson")
-			div
-				span Comment :
-				textarea( name="comment", rows=5, id="addCommentComment")
-			div#editArticleSubmit
-				input(type="submit", value="Send")
+			div.form-group
+				label(class="control-label col-sm-2" for="person") Author :
+				div.col-sm-10
+					input(required type="text", name="person" class="form-control")
+			div.form-group
+				label(class="control-label col-sm-2" for="comment") Comment :
+				div.col-sm-10
+					textarea(required name="comment", rows=5,  class="form-control")
+			div.form-group
+				input(type="submit", value="Send" class="btn btn-default btn-primary")

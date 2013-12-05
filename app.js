@@ -54,8 +54,32 @@ app.get('/blog/:id', function(req, res) {
 	articleProvider.findById(req.params.id, function(error, article) {
 		res.render('blog_show.jade', {
 			title: article.title,
-			article:article
+			article: article
 		});
+	});
+});
+
+app.get('/blog/:id/edit', function(req, res) {
+	articleProvider.findById(req.params.id, function(error, article) {
+		res.render('blog_edit.jade', {
+			title: article.title,
+			article: article
+		});
+	});
+});
+
+app.post('/blog/:id/save', function(req, res) {
+	articleProvider.update(req.param('_id'),{
+		title: req.param('title'),
+		body: req.param('body')
+	}, function(error, docs) {
+		res.redirect('/blog/' + req.param('_id'));
+	});
+});
+
+app.get('/blog/:id/delete', function(req, res) {
+	articleProvider.delete(req.params.id, function(error, docs) {
+		res.redirect('/');
 	});
 });
 

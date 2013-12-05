@@ -84,6 +84,42 @@ ArticleProvider.prototype.save = function(articles, callback) {
 		}
 	});
 };
+ArticleProvider.prototype.update = function(articleId, articles, callback) {
+	this.getCollection(function(error, article_collection) {
+		if( error ) callback(error);
+		else {
+			for( var i =0;i< articles.length;i++ ) {
+				article = articles[i];
+				text_to_replace = articles[i].body;
+				var paragraphs = article.body.split('\r\n\r\n');
+				article.body = paragraphs;
+			}
+
+			article_collection.update(
+				{_id: article_collection.db.bson_serializer.ObjectID.createFromHexString(articleId)},
+				{$set : articles},
+				function(error, articles) {
+					if(error) callback(error);
+					else callback(null, articles);
+				}
+			);
+		}
+	});
+};
+ArticleProvider.prototype.delete = function(articleId, callback) {
+	this.getCollection(function(error, article_collection) {
+		if(error) callback(error);
+		else {
+			article_collection.remove(
+				{_id: article_collection.db.bson_serializer.ObjectID.createFromHexString(articleId)},
+				function(error, article){
+					if(error) callback(error);
+					else callback(null, article);
+				}
+			);
+		}
+	});
+};
 ArticleProvider.prototype.addCommentToArticle = function(articleId, comment, callback) {
 	this.getCollection(function(error, article_collection) {
 		if( error ){

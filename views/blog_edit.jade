@@ -1,0 +1,15 @@
+extends layout
+block content
+	h1= title
+	form(method="post", action="/blog/:id/save").form-horizontal.text-center
+		input( type="hidden", name="_id", value=article._id.toHexString())
+		div.form-group
+			label(class="control-label col-sm-2" for="title") Title :
+			div.col-sm-10
+				input(required type="text", name="title" class="form-control" value=article.title)
+		div.form-group
+			label(class="control-label col-sm-2" for="body") Body :
+			div.col-sm-10
+				textarea(required name="body", rows=5,  class="form-control")= article.body
+		div.form-group
+			input(type="submit", value="Save" class="btn btn-default btn-primary")
